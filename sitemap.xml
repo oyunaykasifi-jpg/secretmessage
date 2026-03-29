@@ -19,4 +19,124 @@
     <loc>https://secretmessagetool.com/why-use-secretmessage.html</loc>
     <priority>0.9</priority>
   </url>
+
+  <url>
+    <loc>https://secretmessagetool.com/tr/</loc>
+    <priority>0.9</priority>
+  </url>
+
+  <url>
+    <loc>https://secretmessagetool.com/tr/gizlilik.html</loc>
+    <priority>0.8</priority>
+  </url>
+
+  <url>
+    <loc>https://secretmessagetool.com/tr/rehber.html</loc>
+    <priority>0.8</priority>
+  </url>
+
+  <url>
+    <loc>https://secretmessagetool.com/tr/neden-secretmessage-kullanmali.html</loc>
+    <priority>0.9</priority>
+  </url>
+
+  <url>
+    <loc>https://secretmessagetool.com/es/</loc>
+    <priority>0.9</priority>
+  </url>
+
+  <url>
+    <loc>https://secretmessagetool.com/es/privacidad.html</loc>
+    <priority>0.8</priority>
+  </url>
+
+  <url>
+    <loc>https://secretmessagetool.com/es/guia.html</loc>
+    <priority>0.8</priority>
+  </url>
+
+  <url>
+    <loc>https://secretmessagetool.com/es/por-que-usar-secretmessage.html</loc>
+    <priority>0.9</priority>
+  </url>
+
+  <url>
+    <loc>https://secretmessagetool.com/pt/</loc>
+    <priority>0.9</priority>
+  </url>
+
+  <url>
+    <loc>https://secretmessagetool.com/pt/privacidade.html</loc>
+    <priority>0.8</priority>
+  </url>
+
+  <url>
+    <loc>https://secretmessagetool.com/pt/guia.html</loc>
+    <priority>0.8</priority>
+  </url>
+
+  <url>
+    <loc>https://secretmessagetool.com/pt/por-que-usar-secretmessage.html</loc>
+    <priority>0.9</priority>
+  </url>
+
+  <url>
+    <loc>https://secretmessagetool.com/fr/</loc>
+    <priority>0.9</priority>
+  </url>
+
+  <url>
+    <loc>https://secretmessagetool.com/fr/confidentialite.html</loc>
+    <priority>0.8</priority>
+  </url>
+
+  <url>
+    <loc>https://secretmessagetool.com/fr/guide.html</loc>
+    <priority>0.8</priority>
+  </url>
+
+  <url>
+    <loc>https://secretmessagetool.com/fr/pourquoi-utiliser-secretmessage.html</loc>
+    <priority>0.9</priority>
+  </url>
+
+  <url>
+    <loc>https://secretmessagetool.com/de/</loc>
+    <priority>0.9</priority>
+  </url>
+
+  <url>
+    <loc>https://secretmessagetool.com/de/datenschutz.html</loc>
+    <priority>0.8</priority>
+  </url>
+
+  <url>
+    <loc>https://secretmessagetool.com/de/anleitung.html</loc>
+    <priority>0.8</priority>
+  </url>
+
+  <url>
+    <loc>https://secretmessagetool.com/de/warum-secretmessage-verwenden.html</loc>
+    <priority>0.9</priority>
+  </url>
+
+  <url>
+    <loc>https://secretmessagetool.com/ar/</loc>
+    <priority>0.9</priority>
+  </url>
+
+  <url>
+    <loc>https://secretmessagetool.com/ar/privacy.html</loc>
+    <priority>0.8</priority>
+  </url>
+
+  <url>
+    <loc>https://secretmessagetool.com/ar/guide.html</loc>
+    <priority>0.8</priority>
+  </url>
+
+  <url>
+    <loc>https://secretmessagetool.com/ar/why-use-secretmessage.html</loc>
+    <priority>0.9</priority>
+  </url>
 </urlset>
