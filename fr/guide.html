@@ -1,0 +1,161 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Guide SecretMessage | Comment chiffrer des messages et des photos en toute sécurité</title>
+  <meta name="description" content="Apprenez à utiliser SecretMessage pour chiffrer des messages et des photos directement dans votre navigateur. Partagez plus sûrement via WhatsApp, Telegram, Email, Instagram DM et d’autres plateformes. Compatible avec une utilisation hors ligne et peut être enregistré sur votre ordinateur." />
+  <meta name="keywords" content="guide SecretMessage, guide message chiffré, chiffrer des messages dans le navigateur, outil de message privé, partage de photo chiffrée, outil de chiffrement hors ligne, message chiffré WhatsApp, message chiffré Telegram, confidentialité Instagram DM, outil de chiffrement email" />
+  <meta name="author" content="SecretMessage" />
+  <meta property="og:title" content="Guide SecretMessage" />
+  <meta property="og:description" content="Chiffrez des messages et des photos directement dans votre navigateur. Partagez-les plus sûrement via des applications de messagerie, email ou messages privés. Compatible hors ligne et peut être enregistré localement." />
+  <meta property="og:url" content="https://secretmessagetool.com/fr/guide.html" />
+  <meta property="og:type" content="article" />
+  <meta property="og:image" content="https://secretmessagetool.com/icon-512.png" />
+  <link rel="canonical" href="https://secretmessagetool.com/fr/guide.html" />
+  <meta name="robots" content="index,follow" />
+  <style>
+    :root { color-scheme: light dark; }
+    body { font-family:-apple-system,system-ui,Segoe UI,Roboto,Arial; margin:0; }
+    .wrap { max-width:780px; margin:0 auto; padding:16px; }
+    .card { border:1px solid rgba(127,127,127,.35); border-radius:14px; padding:14px; margin:12px 0; }
+    .muted { font-size:13px; opacity:.8; line-height:1.55; }
+    h1 { margin: 10px 0 8px; font-size: 24px; }
+    h2 { margin: 0 0 8px; font-size: 18px; }
+    p, li { line-height: 1.6; }
+    a { text-decoration:none; color:inherit; }
+    .pill { display:inline-block; padding:4px 10px; border:1px solid rgba(127,127,127,.35); border-radius:999px; font-size:12px; }
+  </style>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "HowTo",
+    "name": "Comment utiliser SecretMessage",
+    "description": "Guide étape par étape pour chiffrer et déchiffrer des messages et des photos optionnelles avec SecretMessage.",
+    "url": "https://secretmessagetool.com/fr/guide.html",
+    "publisher": {
+      "@type": "Organization",
+      "name": "SecretMessage",
+      "url": "https://secretmessagetool.com/"
+    },
+    "step": [
+      {
+        "@type": "HowToStep",
+        "name": "Écrivez votre message",
+        "text": "Ouvrez l’onglet Chiffrer, écrivez votre message et ajoutez éventuellement une photo."
+      },
+      {
+        "@type": "HowToStep",
+        "name": "Choisissez une clé",
+        "text": "Créez votre propre clé ou utilisez le générateur intégré."
+      },
+      {
+        "@type": "HowToStep",
+        "name": "Créez le bloc chiffré",
+        "text": "Cliquez sur Chiffrer pour générer un bloc chiffré unique."
+      },
+      {
+        "@type": "HowToStep",
+        "name": "Partagez-le en toute sécurité",
+        "text": "Copiez le bloc chiffré ou téléchargez-le comme fichier texte et envoyez-le via des applications de messagerie, email ou messages privés."
+      },
+      {
+        "@type": "HowToStep",
+        "name": "Déchiffrez avec la même clé",
+        "text": "Le destinataire ouvre l’onglet Déchiffrer, colle le bloc, entre la même clé et le déchiffre."
+      }
+    ]
+  }
+  </script>
+</head>
+<body>
+  <div class="wrap">
+    <h1>Comment utiliser SecretMessage</h1>
+
+    <div class="card">
+      <h2>Qu’est-ce que SecretMessage ?</h2>
+      <p class="muted" style="margin-top:6px;">
+        SecretMessage est un outil de navigateur compatible avec une utilisation hors ligne qui chiffre du texte et des photos optionnelles directement sur votre appareil grâce à AES-256-GCM.
+        Votre contenu est traité localement dans votre navigateur et n’est pas envoyé vers un serveur.
+      </p>
+      <div class="muted" style="margin-top:10px;">
+        <a href="/fr/" rel="noopener">← Retour à l’accueil</a>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>Pourquoi chiffrer avant d’envoyer ?</h2>
+      <p class="muted" style="margin-top:6px;">
+        SecretMessage vous aide à chiffrer votre contenu avant de l’envoyer via des plateformes comme WhatsApp, Telegram, Email, Instagram DM, Signal, Discord ou d’autres canaux pratiques pour le copier-coller.
+        Au lieu d’envoyer du texte en clair, vous envoyez un bloc chiffré qui ne peut être ouvert qu’avec la même clé.
+      </p>
+    </div>
+
+    <div class="card">
+      <h2>Pouvez-vous l’utiliser hors ligne ou l’enregistrer sur votre ordinateur ?</h2>
+      <p class="muted" style="margin-top:6px;">
+        Oui. SecretMessage est conçu comme une application web compatible avec une utilisation hors ligne. Après le chargement du site, les fichiers principaux peuvent rester disponibles sur votre appareil grâce au cache du navigateur et à la prise en charge des service workers.
+        Vous pouvez également enregistrer les fichiers du projet sur votre ordinateur et ouvrir l’application localement dans un navigateur pour une utilisation personnelle hors ligne.
+      </p>
+      <div class="muted" style="margin-top:8px;">
+        <span class="pill">Compatible hors ligne</span>
+        <span class="pill">Peut être enregistré localement</span>
+        <span class="pill">Aucun compte requis</span>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>1) Créez un bloc chiffré</h2>
+      <p class="muted" style="margin-top:8px;">
+        Ouvrez l’onglet <b>Chiffrer</b>. Écrivez votre message et ajoutez éventuellement une photo.
+        Ensuite, choisissez votre propre clé ou utilisez <b>🔑 Générer</b>.
+        Cliquez sur <b>Chiffrer → Créer le bloc chiffré</b> pour générer un bloc chiffré unique.
+      </p>
+    </div>
+
+    <div class="card">
+      <h2>2) Partagez-le via le canal de votre choix</h2>
+      <p class="muted" style="margin-top:8px;">
+        Vous pouvez copier le bloc chiffré et le coller dans WhatsApp, Telegram, Email, Instagram DM, Signal, Discord ou d’autres plateformes similaires.
+        Si vous avez inclus une photo, le bloc chiffré peut devenir volumineux. Dans ce cas, le télécharger comme fichier texte et l’envoyer comme document ou fichier est généralement l’option la plus fiable.
+      </p>
+    </div>
+
+    <div class="card">
+      <h2>3) Déchiffrez le message</h2>
+      <p class="muted" style="margin-top:8px;">
+        Le destinataire ouvre l’onglet <b>Déchiffrer</b>, colle le bloc chiffré et entre la même clé.
+        Si la clé est correcte, le message d’origine et la photo optionnelle sont révélés.
+        Si la clé est incorrecte ou si le bloc a été modifié, le déchiffrement échoue car AES-GCM vérifie l’intégrité.
+      </p>
+    </div>
+
+    <div class="card">
+      <h2>Bonnes pratiques</h2>
+      <div class="muted" style="margin-top:8px;">
+        <b>N’envoyez pas la clé dans le même message si possible.</b><br/>
+        <b>Utilisez une clé plus forte pour un contenu sensible.</b><br/>
+        <b>Si le bloc chiffré est volumineux, envoyez-le comme fichier ou document.</b><br/>
+        <b>Gardez votre appareil sécurisé.</b>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>Questions fréquentes</h2>
+      <div class="muted" style="margin-top:8px;">
+        <b>Mes données sont-elles envoyées vers un serveur ?</b> Non. Le chiffrement et le déchiffrement se font localement dans votre navigateur.<br/>
+        <b>Puis-je l’utiliser sur mon ordinateur sans rester en ligne ?</b> Oui. Il est compatible avec une utilisation hors ligne et peut également être enregistré pour un usage local sur votre appareil.<br/>
+        <b>Avec quelles applications puis-je l’utiliser ?</b> Toute plateforme qui vous permet de coller du texte ou d’envoyer un fichier, y compris WhatsApp, Telegram, Email, Instagram DM, Signal, et bien plus.<br/>
+        <b>Pourquoi le bloc chiffré devient-il long ?</b> Parce que le texte et les données optionnelles de photo sont regroupés dans un seul bloc chiffré.<br/>
+        <b>Que se passe-t-il si je perds la clé ?</b> Le contenu ne peut pas être récupéré sans la clé correcte.
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="muted">
+        Politique de confidentialité : <a href="/fr/confidentialite.html" rel="noopener" target="_blank">confidentialite.html</a>
+      </div>
+    </div>
+  </div>
+</body>
+</html>
