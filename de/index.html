@@ -1,0 +1,212 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <meta name="theme-color" content="#111111" />
+  <meta name="description" content="SecretMessage – Verschlüssele Nachrichten und Fotos direkt in deinem Browser mit AES-256. Keine Serverspeicherung. Kein Tracking. Sicher teilen über WhatsApp, Telegram, E-Mail und mehr." />
+  <meta name="keywords" content="geheime Nachricht, verschlüsselte Nachricht, private Nachricht, Foto verschlüsseln, AES-256, Offline-Verschlüsselungstool" />
+  <meta name="author" content="SecretMessage" />
+  <title>SecretMessage – Offline-Tool zum Verschlüsseln privater Nachrichten und Fotos</title>
+  <meta property="og:title" content="SecretMessage – Lokal verschlüsseln. Sicher teilen." />
+  <meta property="og:description" content="Verschlüssele Nachrichten und Fotos auf deinem Gerät. Keine Serverspeicherung. Kein Tracking." />
+  <meta property="og:url" content="https://secretmessagetool.com/de/" />
+  <meta property="og:type" content="website" />
+  <meta property="og:image" content="https://secretmessagetool.com/icon-512.png" />
+  <link rel="canonical" href="https://secretmessagetool.com/de/" />
+  <link rel="manifest" href="/manifest.json" />
+  <link rel="icon" href="/icon-192.png" />
+  <link rel="apple-touch-icon" href="/icon-192.png" />
+  <style>
+    :root { color-scheme: light dark; }
+    body { font-family: -apple-system, system-ui, Segoe UI, Roboto, Arial; margin: 0; }
+    .wrap { max-width: 780px; margin: 0 auto; padding: 16px; }
+    h1 { margin: 10px 0 6px; font-size: 22px; }
+    h2 { margin: 0 0 8px; font-size: 16px; }
+    .card { border: 1px solid rgba(127,127,127,.35); border-radius: 14px; padding: 14px; margin: 12px 0; }
+    label { display:block; font-size: 13px; opacity: .85; margin: 10px 0 6px; }
+    textarea, input { width: 100%; box-sizing: border-box; padding: 12px; border-radius: 12px; border: 1px solid rgba(127,127,127,.35); font-size: 15px; }
+    textarea { min-height: 110px; resize: vertical; }
+    .row { display:flex; gap:10px; flex-wrap: wrap; align-items: center; }
+    button {
+      padding: 12px 14px; border-radius: 12px; border: 1px solid rgba(127,127,127,.35);
+      background: transparent; font-size: 15px; cursor: pointer;
+    }
+    button.primary { background: #111; color: #fff; border-color: #111; }
+    .tabs { display:flex; gap:10px; margin: 10px 0 0; }
+    .tab { flex:1; }
+    .muted { font-size: 12px; opacity: .75; line-height: 1.35; }
+    .ok { color: #1a7f37; }
+    .warn { color: #b85c00; }
+    .err { color: #b00020; }
+    .pill { display:inline-block; padding: 4px 10px; border: 1px solid rgba(127,127,127,.35); border-radius: 999px; font-size: 12px; }
+    .footer { margin-top: 12px; font-size: 12px; opacity: .75; }
+    .preview { margin-top: 10px; display:none; }
+    .preview img { max-width: 100%; border-radius: 12px; border: 1px solid rgba(127,127,127,.35); }
+    a { text-decoration: none; }
+  </style>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "SecretMessage",
+    "url": "https://secretmessagetool.com/de/",
+    "applicationCategory": "SecurityApplication",
+    "operatingSystem": "Web",
+    "description": "Verschlüsselt Nachrichten und optionale Fotos direkt in deinem Browser mit AES-256-GCM. Keine Serverspeicherung. Kein Tracking. Teile verschlüsselte Blöcke sicher.",
+    "offers": {
+      "@type": "Offer",
+      "price": "0",
+      "priceCurrency": "USD"
+    },
+    "publisher": {
+      "@type": "Organization",
+      "name": "SecretMessage",
+      "url": "https://secretmessagetool.com/"
+    }
+  }
+  </script>
+</head>
+<body>
+  <div class="wrap">
+    <h1>🔒 SecretMessage</h1>
+    <div class="muted">Verschlüssele Nachrichten direkt in deinem Browser. Keine Serverspeicherung. Kein Tracking. Funktioniert mit WhatsApp, Telegram, E-Mail und mehr.</div>
+
+    <div class="tabs">
+      <button class="tab primary" id="tabLock">Verschlüsseln</button>
+      <button class="tab" id="tabUnlock">Entschlüsseln</button>
+    </div>
+
+    <div class="card" id="panelLock">
+      <label>Nachricht (optional)</label>
+      <textarea id="plain" placeholder="Schreibe eine Nachricht oder füge ein Foto hinzu…"></textarea>
+
+      <label>Foto (optional)</label>
+      <input type="file" id="photo" accept="image/*" />
+
+      <label>Schlüssel</label>
+      <div class="row">
+        <input id="key" placeholder="Schreibe deinen eigenen Schlüssel oder generiere einen…" autocomplete="off" />
+        <button id="genKey" type="button">🔑 Generieren</button>
+      </div>
+      <div class="row" style="margin-top:8px;">
+        <span class="pill" id="strengthPill">Stärke: -</span>
+        <span class="muted" id="strengthHint"></span>
+      </div>
+
+      <div class="row" style="margin-top:12px;">
+        <button class="primary" id="lockBtn" type="button">Verschlüsseln → Verschlüsselten Block erstellen</button>
+        <button id="clearLock" type="button">Leeren</button>
+      </div>
+
+      <label>Verschlüsselter Block (in WhatsApp einfügen oder speichern)</label>
+      <textarea id="cipher" placeholder="Dein verschlüsselter Block erscheint hier…" readonly></textarea>
+
+      <div class="row" style="margin-top:10px;">
+        <button id="copyCipher" type="button">Kopieren</button>
+        <button id="shareCipher" type="button">Teilen</button>
+        <button id="downloadCipher" type="button">Als .txt herunterladen</button>
+        <span class="muted" id="lockStatus"></span>
+      </div>
+
+      <div class="footer">
+        Tipp: Wenn du ein Foto angehängt hast, kann der verschlüsselte Block sehr groß werden. Ihn als Dokumentdatei zu senden ist die sicherste Option.
+      </div>
+    </div>
+
+    <div class="card" id="panelUnlock" style="display:none;">
+      <label>Verschlüsselter Block</label>
+      <textarea id="cipherIn" placeholder="Füge den verschlüsselten Block hier ein…"></textarea>
+
+      <label>Schlüssel</label>
+      <input id="keyIn" placeholder="Gib den Schlüssel ein…" autocomplete="off" />
+
+      <div class="row" style="margin-top:12px;">
+        <button class="primary" id="unlockBtn" type="button">Entschlüsseln → Öffnen</button>
+        <button id="clearUnlock" type="button">Leeren</button>
+      </div>
+
+      <label>Entschlüsselte Nachricht</label>
+      <textarea id="plainOut" placeholder="Die entschlüsselte Nachricht erscheint hier…" readonly></textarea>
+
+      <div class="preview" id="imgWrap">
+        <label>Entschlüsseltes Foto</label>
+        <img id="imgOut" alt="Entschlüsseltes Foto" />
+        <div class="row" style="margin-top:10px;">
+          <button id="downloadImg" type="button">Foto herunterladen</button>
+        </div>
+      </div>
+
+      <div class="row" style="margin-top:10px;">
+        <button id="copyPlain" type="button">Text kopieren</button>
+        <button id="sharePlain" type="button">Teilen</button>
+        <span class="muted" id="unlockStatus"></span>
+      </div>
+
+      <div class="footer">
+        Hinweis: Wenn der Schlüssel falsch ist oder der Block verändert wurde, schlägt die Entschlüsselung fehl, weil AES-GCM die Integrität überprüft.
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>☕ Unterstütze dieses Projekt</h2>
+      <div class="muted" style="margin-bottom:10px;">
+        Dieses Projekt ist komplett kostenlos und datenschutzorientiert. Wenn du es unterstützen möchtest:
+      </div>
+
+      <label>Bitcoin-Adresse (SegWit)</label>
+      <input id="donateAddr" value="bc1qw8g5fa82nj9eu6akr9wxx4gh4c5fxekm8dykgy" readonly />
+
+      <div class="row" style="margin-top:10px;">
+        <button id="copyDonate" type="button">Adresse kopieren</button>
+        <span class="muted" id="donateStatus"></span>
+      </div>
+
+      <div class="footer">
+        Hinweis: Wir verwenden weder Werbung noch Tracking. Wir möchten dieses Projekt konsequent datenschutzorientiert halten.
+      </div>
+    </div>
+
+    <div class="card" style="display:flex; gap:10px; flex-wrap:wrap; align-items:center; justify-content:space-between;">
+      <div class="row" style="gap:8px;">
+        <span class="pill">🛡️ Auf deinem Gerät verschlüsselt</span>
+        <span class="pill">🗄️ Keine Serverspeicherung</span>
+        <span class="pill">🕵️ Kein Tracking</span>
+      </div>
+
+      <div class="muted">
+        So funktioniert es: Alles wird in deinem Browser verschlüsselt und entschlüsselt. Nichts wird hochgeladen.
+      </div>
+
+      <div class="muted" style="margin-top:8px; display:flex; gap:10px; flex-wrap:wrap; align-items:center;">
+        <a href="anleitung.html" target="_blank" rel="noopener">📘 Anleitung</a>
+        <a href="datenschutz.html" target="_blank" rel="noopener">🔒 Datenschutzerklärung</a>
+        <a href="warum-secretmessage-verwenden.html" target="_blank" rel="noopener">📰 Warum SecretMessage verwenden?</a>
+        <span>🌍 Sprachen:</span>
+        <a class="pill" href="/">EN</a>
+        <a class="pill" href="/tr/">TR</a>
+        <a class="pill" href="/es/">ES</a>
+        <a class="pill" href="/pt/">PT</a>
+        <a class="pill" href="/fr/">FR</a>
+        <a class="pill" href="/de/" style="background:#111;color:#fff;border-color:#111;">DE</a>
+        <a class="pill" href="/ar/">AR</a>
+      </div>
+    </div>
+
+    <div class="card" style="margin-top:10px;">
+      <div style="font-weight:600; cursor:pointer;" onclick="toggleHow()">
+        ❓ Wie funktioniert es?
+      </div>
+      <div id="howBox" style="display:none; margin-top:8px;" class="muted">
+        1️⃣ Schreibe deine Nachricht und füge optional ein Foto hinzu<br/>
+        2️⃣ Wähle einen Schlüssel oder nutze 🔑 Generieren<br/>
+        3️⃣ Klicke auf <b>Verschlüsseln</b>, um den verschlüsselten Block zu erstellen<br/>
+        4️⃣ Sende den Block möglichst als <b>Dokument</b>, wenn er groß ist<br/>
+        5️⃣ Der Empfänger öffnet den Tab <b>Entschlüsseln</b>, fügt den Block ein, gibt denselben Schlüssel ein und liest die Nachricht
+      </div>
+    </div>
+  </div>
+
+  <script src="/app.js"></script>
+</body>
+</html>
