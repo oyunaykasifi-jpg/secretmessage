@@ -1,4 +1,4 @@
-// SecretMessage - Offline, client-side
+// SecretMessage - Offline, client-side, multilingual
 // Single encrypted block: text + optional photo
 // Encryption: AES-256-GCM, key derivation: PBKDF2(SHA-256)
 // Format: GSM1.<salt>.<iv>.<ct> (Base64URL)
@@ -10,6 +10,302 @@ const IV_LEN = 12;
 
 const $ = (id) => document.getElementById(id);
 
+// --------------------------------------------------
+// Language detection + translations
+// --------------------------------------------------
+function detectLang() {
+  const htmlLang = (document.documentElement.lang || "").toLowerCase().trim();
+  if (htmlLang.startsWith("tr")) return "tr";
+  if (htmlLang.startsWith("es")) return "es";
+  if (htmlLang.startsWith("pt")) return "pt";
+  if (htmlLang.startsWith("fr")) return "fr";
+  if (htmlLang.startsWith("de")) return "de";
+  if (htmlLang.startsWith("ar")) return "ar";
+  return "en";
+}
+
+const LANG = detectLang();
+
+const I18N = {
+  en: {
+    strength: "Strength",
+    weak: "Weak",
+    medium: "Medium",
+    strong: "Strong",
+    weakHint: "Use 🔑 Generate or choose a stronger key.",
+    mediumHint: "Usable, but a stronger key is better.",
+    strongHint: "Great. If possible, share the key outside the same messaging app.",
+
+    invalidFormat: "Invalid format. Expected GSM1.*.*.*",
+    invalidPayloadHeader: "Invalid payload header.",
+    corruptedHeaderLength: "Corrupted payload header length.",
+
+    keyEmpty: "Key cannot be empty. Use 🔑 Generate if you want.",
+    keyEmptyUnlock: "Key cannot be empty.",
+    tokenEmpty: "Encrypted block cannot be empty.",
+    addMessageOrPhoto: "Add at least a message or a photo.",
+    photoLarge: "Warning: The photo is large. The encrypted block may become long. A smaller image may work better.",
+    readyLargeBlock: "Ready ✅ Best option for large blocks: send as a document file.",
+    copied: "Copied ✅",
+    copyFailed: "Could not copy. Clipboard permission may be blocked.",
+    shareUnavailableCopied: "Sharing not available. Copied instead ✅",
+    readyToShare: "Ready to share ✅",
+    shareCancelled: "Share cancelled or failed.",
+    fileDownloaded: "File downloaded ✅",
+    decrypted: "Decrypted ✅",
+    decryptFailedPrefix: "Could not decrypt:",
+    textCopied: "Text copied ✅",
+
+    donateCopied: "Copied ✅",
+    donateCopyFailed: "Could not copy. Clipboard permission may be blocked.",
+
+    shareTitleCipher: "SecretMessage",
+    shareTitlePlain: "Decrypted Message",
+
+    encryptedBlockFile: "encrypted-block.txt",
+    decryptedPhotoPrefix: "decrypted-photo"
+  },
+
+  tr: {
+    strength: "Güç",
+    weak: "Zayıf",
+    medium: "Orta",
+    strong: "Güçlü",
+    weakHint: "Daha güçlü bir anahtar için 🔑 Üret seçeneğini kullan.",
+    mediumHint: "Kullanılabilir, ama daha güçlü bir anahtar daha iyidir.",
+    strongHint: "Harika. Mümkünse anahtarı aynı mesajlaşma uygulamasının dışında paylaş.",
+
+    invalidFormat: "Geçersiz format. Beklenen biçim: GSM1.*.*.*",
+    invalidPayloadHeader: "Geçersiz payload başlığı.",
+    corruptedHeaderLength: "Bozuk payload başlık uzunluğu.",
+
+    keyEmpty: "Anahtar boş olamaz. İstersen 🔑 Üret kullan.",
+    keyEmptyUnlock: "Anahtar boş olamaz.",
+    tokenEmpty: "Şifreli blok boş olamaz.",
+    addMessageOrPhoto: "En az bir mesaj veya fotoğraf eklemelisin.",
+    photoLarge: "Uyarı: Fotoğraf büyük. Şifreli blok uzayabilir. Daha küçük bir görsel daha iyi olabilir.",
+    readyLargeBlock: "Hazır ✅ Uzun bloklar için en iyi seçenek: belge veya dosya olarak göndermek.",
+    copied: "Kopyalandı ✅",
+    copyFailed: "Kopyalanamadı. Pano izni engellenmiş olabilir.",
+    shareUnavailableCopied: "Paylaşım kullanılamadı. Bunun yerine kopyalandı ✅",
+    readyToShare: "Paylaşıma hazır ✅",
+    shareCancelled: "Paylaşım iptal edildi veya başarısız oldu.",
+    fileDownloaded: "Dosya indirildi ✅",
+    decrypted: "Çözüldü ✅",
+    decryptFailedPrefix: "Çözülemedi:",
+    textCopied: "Metin kopyalandı ✅",
+
+    donateCopied: "Kopyalandı ✅",
+    donateCopyFailed: "Kopyalanamadı. Pano izni engellenmiş olabilir.",
+
+    shareTitleCipher: "SecretMessage",
+    shareTitlePlain: "Çözülen Mesaj",
+
+    encryptedBlockFile: "sifreli-blok.txt",
+    decryptedPhotoPrefix: "cozulmus-fotograf"
+  },
+
+  es: {
+    strength: "Seguridad",
+    weak: "Débil",
+    medium: "Media",
+    strong: "Fuerte",
+    weakHint: "Usa 🔑 Generar o elige una clave más fuerte.",
+    mediumHint: "Sirve, pero una clave más fuerte es mejor.",
+    strongHint: "Muy bien. Si es posible, comparte la clave fuera de la misma app de mensajería.",
+
+    invalidFormat: "Formato no válido. Se esperaba GSM1.*.*.*",
+    invalidPayloadHeader: "Encabezado de payload no válido.",
+    corruptedHeaderLength: "Longitud del encabezado del payload dañada.",
+
+    keyEmpty: "La clave no puede estar vacía. Usa 🔑 Generar si quieres.",
+    keyEmptyUnlock: "La clave no puede estar vacía.",
+    tokenEmpty: "El bloque cifrado no puede estar vacío.",
+    addMessageOrPhoto: "Agrega al menos un mensaje o una foto.",
+    photoLarge: "Advertencia: La foto es grande. El bloque cifrado puede hacerse largo. Una imagen más pequeña podría funcionar mejor.",
+    readyLargeBlock: "Listo ✅ Para bloques grandes, lo mejor es enviarlos como archivo o documento.",
+    copied: "Copiado ✅",
+    copyFailed: "No se pudo copiar. El permiso del portapapeles puede estar bloqueado.",
+    shareUnavailableCopied: "Compartir no está disponible. Se copió en su lugar ✅",
+    readyToShare: "Listo para compartir ✅",
+    shareCancelled: "Se canceló el compartir o falló.",
+    fileDownloaded: "Archivo descargado ✅",
+    decrypted: "Descifrado ✅",
+    decryptFailedPrefix: "No se pudo descifrar:",
+    textCopied: "Texto copiado ✅",
+
+    donateCopied: "Copiado ✅",
+    donateCopyFailed: "No se pudo copiar. El permiso del portapapeles puede estar bloqueado.",
+
+    shareTitleCipher: "SecretMessage",
+    shareTitlePlain: "Mensaje descifrado",
+
+    encryptedBlockFile: "bloque-cifrado.txt",
+    decryptedPhotoPrefix: "foto-descifrada"
+  },
+
+  pt: {
+    strength: "Força",
+    weak: "Fraca",
+    medium: "Média",
+    strong: "Forte",
+    weakHint: "Use 🔑 Gerar ou escolha uma chave mais forte.",
+    mediumHint: "Serve, mas uma chave mais forte é melhor.",
+    strongHint: "Ótimo. Se possível, compartilhe a chave fora do mesmo aplicativo de mensagens.",
+
+    invalidFormat: "Formato inválido. Esperado: GSM1.*.*.*",
+    invalidPayloadHeader: "Cabeçalho do payload inválido.",
+    corruptedHeaderLength: "Comprimento do cabeçalho do payload corrompido.",
+
+    keyEmpty: "A chave não pode estar vazia. Use 🔑 Gerar se quiser.",
+    keyEmptyUnlock: "A chave não pode estar vazia.",
+    tokenEmpty: "O bloco criptografado não pode estar vazio.",
+    addMessageOrPhoto: "Adicione pelo menos uma mensagem ou uma foto.",
+    photoLarge: "Aviso: A foto é grande. O bloco criptografado pode ficar longo. Uma imagem menor pode funcionar melhor.",
+    readyLargeBlock: "Pronto ✅ Para blocos grandes, a melhor opção é enviar como arquivo ou documento.",
+    copied: "Copiado ✅",
+    copyFailed: "Não foi possível copiar. A permissão da área de transferência pode estar bloqueada.",
+    shareUnavailableCopied: "Compartilhamento indisponível. Foi copiado em vez disso ✅",
+    readyToShare: "Pronto para compartilhar ✅",
+    shareCancelled: "Compartilhamento cancelado ou falhou.",
+    fileDownloaded: "Arquivo baixado ✅",
+    decrypted: "Descriptografado ✅",
+    decryptFailedPrefix: "Não foi possível descriptografar:",
+    textCopied: "Texto copiado ✅",
+
+    donateCopied: "Copiado ✅",
+    donateCopyFailed: "Não foi possível copiar. A permissão da área de transferência pode estar bloqueada.",
+
+    shareTitleCipher: "SecretMessage",
+    shareTitlePlain: "Mensagem descriptografada",
+
+    encryptedBlockFile: "bloco-criptografado.txt",
+    decryptedPhotoPrefix: "foto-descriptografada"
+  },
+
+  fr: {
+    strength: "Niveau",
+    weak: "Faible",
+    medium: "Moyen",
+    strong: "Fort",
+    weakHint: "Utilisez 🔑 Générer ou choisissez une clé plus forte.",
+    mediumHint: "Utilisable, mais une clé plus forte est préférable.",
+    strongHint: "Parfait. Si possible, partagez la clé en dehors de la même application de messagerie.",
+
+    invalidFormat: "Format invalide. Format attendu : GSM1.*.*.*",
+    invalidPayloadHeader: "En-tête de payload invalide.",
+    corruptedHeaderLength: "Longueur d’en-tête du payload corrompue.",
+
+    keyEmpty: "La clé ne peut pas être vide. Utilisez 🔑 Générer si vous le souhaitez.",
+    keyEmptyUnlock: "La clé ne peut pas être vide.",
+    tokenEmpty: "Le bloc chiffré ne peut pas être vide.",
+    addMessageOrPhoto: "Ajoutez au moins un message ou une photo.",
+    photoLarge: "Avertissement : La photo est grande. Le bloc chiffré peut devenir long. Une image plus petite peut être préférable.",
+    readyLargeBlock: "Prêt ✅ Pour les blocs volumineux, le mieux est de les envoyer comme document ou fichier.",
+    copied: "Copié ✅",
+    copyFailed: "Impossible de copier. L’autorisation du presse-papiers est peut-être bloquée.",
+    shareUnavailableCopied: "Partage indisponible. Copié à la place ✅",
+    readyToShare: "Prêt à partager ✅",
+    shareCancelled: "Partage annulé ou échoué.",
+    fileDownloaded: "Fichier téléchargé ✅",
+    decrypted: "Déchiffré ✅",
+    decryptFailedPrefix: "Impossible de déchiffrer :",
+    textCopied: "Texte copié ✅",
+
+    donateCopied: "Copié ✅",
+    donateCopyFailed: "Impossible de copier. L’autorisation du presse-papiers est peut-être bloquée.",
+
+    shareTitleCipher: "SecretMessage",
+    shareTitlePlain: "Message déchiffré",
+
+    encryptedBlockFile: "bloc-chiffre.txt",
+    decryptedPhotoPrefix: "photo-dechiffree"
+  },
+
+  de: {
+    strength: "Stärke",
+    weak: "Schwach",
+    medium: "Mittel",
+    strong: "Stark",
+    weakHint: "Verwende 🔑 Generieren oder wähle einen stärkeren Schlüssel.",
+    mediumHint: "Brauchbar, aber ein stärkerer Schlüssel ist besser.",
+    strongHint: "Sehr gut. Teile den Schlüssel wenn möglich nicht über dieselbe Messaging-App.",
+
+    invalidFormat: "Ungültiges Format. Erwartet: GSM1.*.*.*",
+    invalidPayloadHeader: "Ungültiger Payload-Header.",
+    corruptedHeaderLength: "Beschädigte Payload-Header-Länge.",
+
+    keyEmpty: "Der Schlüssel darf nicht leer sein. Nutze bei Bedarf 🔑 Generieren.",
+    keyEmptyUnlock: "Der Schlüssel darf nicht leer sein.",
+    tokenEmpty: "Der verschlüsselte Block darf nicht leer sein.",
+    addMessageOrPhoto: "Füge mindestens eine Nachricht oder ein Foto hinzu.",
+    photoLarge: "Warnung: Das Foto ist groß. Der verschlüsselte Block kann lang werden. Ein kleineres Bild könnte besser funktionieren.",
+    readyLargeBlock: "Fertig ✅ Für große Blöcke ist das Senden als Datei oder Dokument am besten.",
+    copied: "Kopiert ✅",
+    copyFailed: "Konnte nicht kopiert werden. Die Zwischenablage-Berechtigung könnte blockiert sein.",
+    shareUnavailableCopied: "Teilen nicht verfügbar. Stattdessen kopiert ✅",
+    readyToShare: "Bereit zum Teilen ✅",
+    shareCancelled: "Teilen abgebrochen oder fehlgeschlagen.",
+    fileDownloaded: "Datei heruntergeladen ✅",
+    decrypted: "Entschlüsselt ✅",
+    decryptFailedPrefix: "Konnte nicht entschlüsseln:",
+    textCopied: "Text kopiert ✅",
+
+    donateCopied: "Kopiert ✅",
+    donateCopyFailed: "Konnte nicht kopiert werden. Die Zwischenablage-Berechtigung könnte blockiert sein.",
+
+    shareTitleCipher: "SecretMessage",
+    shareTitlePlain: "Entschlüsselte Nachricht",
+
+    encryptedBlockFile: "verschluesselter-block.txt",
+    decryptedPhotoPrefix: "entschluesseltes-foto"
+  },
+
+  ar: {
+    strength: "القوة",
+    weak: "ضعيفة",
+    medium: "متوسطة",
+    strong: "قوية",
+    weakHint: "استخدم 🔑 إنشاء أو اختر مفتاحًا أقوى.",
+    mediumHint: "صالحة للاستخدام، لكن المفتاح الأقوى أفضل.",
+    strongHint: "ممتاز. إذا أمكن، شارك المفتاح خارج نفس تطبيق المراسلة.",
+
+    invalidFormat: "تنسيق غير صالح. المتوقع: GSM1.*.*.*",
+    invalidPayloadHeader: "رأس الحمولة غير صالح.",
+    corruptedHeaderLength: "طول رأس الحمولة تالف.",
+
+    keyEmpty: "لا يمكن أن يكون المفتاح فارغًا. استخدم 🔑 إنشاء إذا أردت.",
+    keyEmptyUnlock: "لا يمكن أن يكون المفتاح فارغًا.",
+    tokenEmpty: "لا يمكن أن تكون الكتلة المشفرة فارغة.",
+    addMessageOrPhoto: "أضف رسالة أو صورة واحدة على الأقل.",
+    photoLarge: "تحذير: الصورة كبيرة. قد تصبح الكتلة المشفرة طويلة. قد تكون الصورة الأصغر أفضل.",
+    readyLargeBlock: "جاهز ✅ للكتل الكبيرة، الخيار الأفضل هو الإرسال كملف أو مستند.",
+    copied: "تم النسخ ✅",
+    copyFailed: "تعذر النسخ. قد يكون إذن الحافظة محظورًا.",
+    shareUnavailableCopied: "المشاركة غير متاحة. تم النسخ بدلًا من ذلك ✅",
+    readyToShare: "جاهز للمشاركة ✅",
+    shareCancelled: "تم إلغاء المشاركة أو فشلت.",
+    fileDownloaded: "تم تنزيل الملف ✅",
+    decrypted: "تم فك التشفير ✅",
+    decryptFailedPrefix: "تعذر فك التشفير:",
+    textCopied: "تم نسخ النص ✅",
+
+    donateCopied: "تم النسخ ✅",
+    donateCopyFailed: "تعذر النسخ. قد يكون إذن الحافظة محظورًا.",
+
+    shareTitleCipher: "SecretMessage",
+    shareTitlePlain: "الرسالة المفككة",
+
+    encryptedBlockFile: "encrypted-block.txt",
+    decryptedPhotoPrefix: "decrypted-photo"
+  }
+};
+
+const T = I18N[LANG] || I18N.en;
+
+// --------------------------------------------------
+// Encoding helpers
+// --------------------------------------------------
 function b64urlEncode(bytes) {
   let bin = "";
   bytes.forEach((b) => (bin += String.fromCharCode(b)));
@@ -34,6 +330,9 @@ function fromUtf8Bytes(b) {
   return new TextDecoder().decode(b);
 }
 
+// --------------------------------------------------
+// Crypto
+// --------------------------------------------------
 async function deriveKeyFromPass(pass, salt) {
   const baseKey = await crypto.subtle.importKey(
     "raw",
@@ -66,7 +365,7 @@ async function encryptBytes(plainBytes, pass) {
 async function decryptBytes(token, pass) {
   const parts = token.trim().split(".");
   if (parts.length !== 4 || parts[0] !== VERSION) {
-    throw new Error("Invalid format. Expected GSM1.*.*.*");
+    throw new Error(T.invalidFormat);
   }
 
   const salt = b64urlDecode(parts[1]);
@@ -79,10 +378,9 @@ async function decryptBytes(token, pass) {
   return new Uint8Array(ptBuf);
 }
 
-// --- Payload packaging: JSON header + optional binary photo ---
-// Binary payload:
-// [magic "PK1"(3)] [hdrLen u32 LE (4)] [hdr JSON bytes] [photoBytes?]
-
+// --------------------------------------------------
+// Payload packaging
+// --------------------------------------------------
 function u32ToBytesLE(n) {
   const a = new Uint8Array(4);
   const dv = new DataView(a.buffer);
@@ -129,13 +427,13 @@ async function buildPayload(plainText, photoFile) {
 
 function parsePayload(payloadBytes) {
   const magic = fromUtf8Bytes(payloadBytes.slice(0, 3));
-  if (magic !== "PK1") throw new Error("Invalid payload header.");
+  if (magic !== "PK1") throw new Error(T.invalidPayloadHeader);
 
   const hdrLen = bytesToU32LE(payloadBytes, 3);
   const hdrStart = 7;
   const hdrEnd = hdrStart + hdrLen;
 
-  if (hdrEnd > payloadBytes.length) throw new Error("Corrupted payload header length.");
+  if (hdrEnd > payloadBytes.length) throw new Error(T.corruptedHeaderLength);
 
   const hdr = JSON.parse(fromUtf8Bytes(payloadBytes.slice(hdrStart, hdrEnd)));
   const photo = hdr.p ? payloadBytes.slice(hdrEnd, hdrEnd + hdr.p.len) : null;
@@ -147,29 +445,18 @@ function parsePayload(payloadBytes) {
   };
 }
 
-// --- Short readable key generator ---
-const WORDS_EN = [
-  "ocean",
-  "river",
-  "forest",
-  "sun",
-  "moon",
-  "ember",
-  "meadow",
-  "cloud",
-  "night",
-  "star",
-  "stone",
-  "valley",
-  "wind",
-  "shore",
-  "echo",
-  "spark",
-  "field",
-  "cedar",
-  "dawn",
-  "mist"
-];
+// --------------------------------------------------
+// Short readable key generator
+// --------------------------------------------------
+const WORDS_BY_LANG = {
+  en: ["ocean", "river", "forest", "sun", "moon", "ember", "meadow", "cloud", "night", "star", "stone", "valley", "wind", "shore", "echo", "spark", "field", "cedar", "dawn", "mist"],
+  tr: ["mavi", "deniz", "orman", "gunes", "ay", "kivilcim", "bulut", "gece", "yildiz", "tas", "vadi", "ruzgar", "sahil", "nehir", "cayir", "dag", "doga", "marti", "sabah", "sis"],
+  es: ["mar", "rio", "bosque", "sol", "luna", "chispa", "nube", "noche", "estrella", "piedra", "valle", "viento", "orilla", "eco", "campo", "cedro", "amanecer", "bruma", "fuego", "monte"],
+  pt: ["mar", "rio", "floresta", "sol", "lua", "faísca", "nuvem", "noite", "estrela", "pedra", "vale", "vento", "costa", "eco", "campo", "cedro", "aurora", "névoa", "fogo", "monte"],
+  fr: ["mer", "riviere", "foret", "soleil", "lune", "etincelle", "nuage", "nuit", "etoile", "pierre", "vallee", "vent", "rive", "echo", "champ", "cedre", "aube", "brume", "flamme", "mont"],
+  de: ["meer", "fluss", "wald", "sonne", "mond", "funke", "wolke", "nacht", "stern", "stein", "tal", "wind", "ufer", "echo", "feld", "zeder", "morgen", "nebel", "glut", "berg"],
+  ar: ["bahr", "nahr", "ghaba", "shams", "qamar", "sharara", "sahab", "layl", "najm", "hajar", "wadi", "rih", "sahil", "sada", "haql", "arz", "fajr", "dabab", "nar", "jabal"]
+};
 
 function randInt(max) {
   return crypto.getRandomValues(new Uint32Array(1))[0] % max;
@@ -180,8 +467,9 @@ function cap(s) {
 }
 
 function genShortKey() {
-  const w1 = WORDS_EN[randInt(WORDS_EN.length)];
-  const w2 = WORDS_EN[randInt(WORDS_EN.length)];
+  const words = WORDS_BY_LANG[LANG] || WORDS_BY_LANG.en;
+  const w1 = words[randInt(words.length)];
+  const w2 = words[randInt(words.length)];
   const n = String(randInt(100)).padStart(2, "0");
   const letters = "abcdefghjkmnpqrstuvwxyz";
   const l1 = letters[randInt(letters.length)];
@@ -203,27 +491,30 @@ function estimateStrength(key) {
 
   if (k.length < 8 || score <= 2) {
     return {
-      level: "Weak",
+      level: T.weak,
       cls: "err",
-      hint: "Use 🔑 Generate or choose a stronger key."
+      hint: T.weakHint
     };
   }
 
   if (score <= 4) {
     return {
-      level: "Medium",
+      level: T.medium,
       cls: "warn",
-      hint: "Usable, but a stronger key is better."
+      hint: T.mediumHint
     };
   }
 
   return {
-    level: "Strong",
+    level: T.strong,
     cls: "ok",
-    hint: "Great. If possible, share the key outside the same messaging app."
+    hint: T.strongHint
   };
 }
 
+// --------------------------------------------------
+// UI helpers
+// --------------------------------------------------
 function setTab(isLock) {
   $("panelLock").style.display = isLock ? "block" : "none";
   $("panelUnlock").style.display = isLock ? "none" : "block";
@@ -232,8 +523,10 @@ function setTab(isLock) {
 }
 
 function updateStrengthUI() {
-  const s = estimateStrength($("key").value);
-  $("strengthPill").textContent = `Strength: ${s.level}`;
+  const el = $("key");
+  if (!el) return;
+  const s = estimateStrength(el.value);
+  $("strengthPill").textContent = `${T.strength}: ${s.level}`;
   $("strengthPill").className = `pill ${s.cls || ""}`;
   $("strengthHint").textContent = s.hint || "";
 }
@@ -280,13 +573,16 @@ let lastImgBlob = null;
 let lastImgUrl = null;
 let lastImgMime = null;
 
+// Register root SW so subfolders also work correctly
 function registerSW() {
   if ("serviceWorker" in navigator) {
-    navigator.serviceWorker.register("./sw.js").catch(() => {});
+    navigator.serviceWorker.register("/sw.js").catch(() => {});
   }
 }
 
-// --- Events ---
+// --------------------------------------------------
+// Events
+// --------------------------------------------------
 $("tabLock").onclick = () => setTab(true);
 $("tabUnlock").onclick = () => setTab(false);
 
@@ -306,25 +602,24 @@ $("lockBtn").onclick = async () => {
     const key = $("key").value.trim();
 
     if (!key) {
-      $("lockStatus").textContent = "Key cannot be empty. Use 🔑 Generate if you want.";
+      $("lockStatus").textContent = T.keyEmpty;
       return;
     }
 
     if (!text.trim() && !file) {
-      $("lockStatus").textContent = "Add at least a message or a photo.";
+      $("lockStatus").textContent = T.addMessageOrPhoto;
       return;
     }
 
     if (file && file.size > 800_000) {
-      $("lockStatus").textContent =
-        "Warning: The photo is large. The encrypted block may become long. A smaller image may work better.";
+      $("lockStatus").textContent = T.photoLarge;
     }
 
     const payload = await buildPayload(text, file);
     const token = await encryptBytes(payload, key);
 
     $("cipher").value = token;
-    $("lockStatus").textContent = "Ready ✅ Best option for large blocks: send as a document file.";
+    $("lockStatus").textContent = T.readyLargeBlock;
   } catch (e) {
     $("lockStatus").textContent = `Error: ${e.message || e}`;
   }
@@ -336,9 +631,9 @@ $("copyCipher").onclick = async () => {
 
   try {
     await copyToClipboard(t);
-    $("lockStatus").textContent = "Copied ✅";
+    $("lockStatus").textContent = T.copied;
   } catch {
-    $("lockStatus").textContent = "Could not copy. Clipboard permission may be blocked.";
+    $("lockStatus").textContent = T.copyFailed;
   }
 };
 
@@ -349,15 +644,15 @@ if (shareCipherBtn) {
     if (!t) return;
 
     try {
-      const ok = await shareText("SecretMessage", t);
+      const ok = await shareText(T.shareTitleCipher, t);
       if (!ok) {
         await copyToClipboard(t);
-        $("lockStatus").textContent = "Sharing not available. Copied instead ✅";
+        $("lockStatus").textContent = T.shareUnavailableCopied;
       } else {
-        $("lockStatus").textContent = "Ready to share ✅";
+        $("lockStatus").textContent = T.readyToShare;
       }
     } catch {
-      $("lockStatus").textContent = "Share cancelled or failed.";
+      $("lockStatus").textContent = T.shareCancelled;
     }
   };
 }
@@ -366,8 +661,8 @@ $("downloadCipher").onclick = () => {
   const t = $("cipher").value.trim();
   if (!t) return;
 
-  downloadText("encrypted-block.txt", t);
-  $("lockStatus").textContent = "File downloaded ✅";
+  downloadText(T.encryptedBlockFile, t);
+  $("lockStatus").textContent = T.fileDownloaded;
 };
 
 $("clearLock").onclick = () => {
@@ -394,12 +689,12 @@ $("unlockBtn").onclick = async () => {
     const key = $("keyIn").value.trim();
 
     if (!token) {
-      $("unlockStatus").textContent = "Encrypted block cannot be empty.";
+      $("unlockStatus").textContent = T.tokenEmpty;
       return;
     }
 
     if (!key) {
-      $("unlockStatus").textContent = "Key cannot be empty.";
+      $("unlockStatus").textContent = T.keyEmptyUnlock;
       return;
     }
 
@@ -416,16 +711,16 @@ $("unlockBtn").onclick = async () => {
       $("imgWrap").style.display = "block";
     }
 
-    $("unlockStatus").textContent = "Decrypted ✅";
+    $("unlockStatus").textContent = T.decrypted;
   } catch (e) {
-    $("unlockStatus").textContent = `Could not decrypt: ${e.message || e}`;
+    $("unlockStatus").textContent = `${T.decryptFailedPrefix} ${e.message || e}`;
   }
 };
 
 $("downloadImg").onclick = () => {
   if (!lastImgBlob) return;
   const ext = extFromMime(lastImgMime);
-  downloadBlob(`decrypted-photo.${ext}`, lastImgBlob);
+  downloadBlob(`${T.decryptedPhotoPrefix}.${ext}`, lastImgBlob);
 };
 
 $("copyPlain").onclick = async () => {
@@ -434,9 +729,9 @@ $("copyPlain").onclick = async () => {
 
   try {
     await copyToClipboard(t);
-    $("unlockStatus").textContent = "Text copied ✅";
+    $("unlockStatus").textContent = T.textCopied;
   } catch {
-    $("unlockStatus").textContent = "Could not copy. Clipboard permission may be blocked.";
+    $("unlockStatus").textContent = T.copyFailed;
   }
 };
 
@@ -447,15 +742,15 @@ if (sharePlainBtn) {
     if (!t) return;
 
     try {
-      const ok = await shareText("Decrypted Message", t);
+      const ok = await shareText(T.shareTitlePlain, t);
       if (!ok) {
         await copyToClipboard(t);
-        $("unlockStatus").textContent = "Sharing not available. Copied instead ✅";
+        $("unlockStatus").textContent = T.shareUnavailableCopied;
       } else {
-        $("unlockStatus").textContent = "Ready to share ✅";
+        $("unlockStatus").textContent = T.readyToShare;
       }
     } catch {
-      $("unlockStatus").textContent = "Share cancelled or failed.";
+      $("unlockStatus").textContent = T.shareCancelled;
     }
   };
 }
@@ -483,9 +778,9 @@ if (donateBtn) {
     try {
       const addr = document.getElementById("donateAddr").value;
       await navigator.clipboard.writeText(addr);
-      document.getElementById("donateStatus").textContent = "Copied ✅";
+      document.getElementById("donateStatus").textContent = T.donateCopied;
     } catch {
-      document.getElementById("donateStatus").textContent = "Could not copy. Clipboard permission may be blocked.";
+      document.getElementById("donateStatus").textContent = T.donateCopyFailed;
     }
   };
 }
