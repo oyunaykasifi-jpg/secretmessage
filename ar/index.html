@@ -1,0 +1,212 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <meta name="theme-color" content="#111111" />
+  <meta name="description" content="SecretMessage – قم بتشفير الرسائل والصور مباشرة في متصفحك باستخدام AES-256. بدون تخزين على الخادم. بدون تتبع. شارك بأمان عبر واتساب وتيليجرام والبريد الإلكتروني والمزيد." />
+  <meta name="keywords" content="رسالة سرية, رسالة مشفرة, رسالة خاصة, تشفير الصور, AES-256, أداة تشفير بدون اتصال" />
+  <meta name="author" content="SecretMessage" />
+  <title>SecretMessage – أداة تشفير الرسائل الخاصة والصور بدون اتصال</title>
+  <meta property="og:title" content="SecretMessage – شفر محليًا وشارك بأمان." />
+  <meta property="og:description" content="شفر الرسائل والصور على جهازك. بدون تخزين على الخادم. بدون تتبع." />
+  <meta property="og:url" content="https://secretmessagetool.com/ar/" />
+  <meta property="og:type" content="website" />
+  <meta property="og:image" content="https://secretmessagetool.com/icon-512.png" />
+  <link rel="canonical" href="https://secretmessagetool.com/ar/" />
+  <link rel="manifest" href="/manifest.json" />
+  <link rel="icon" href="/icon-192.png" />
+  <link rel="apple-touch-icon" href="/icon-192.png" />
+  <style>
+    :root { color-scheme: light dark; }
+    body { font-family: -apple-system, system-ui, Segoe UI, Roboto, Arial; margin: 0; }
+    .wrap { max-width: 780px; margin: 0 auto; padding: 16px; }
+    h1 { margin: 10px 0 6px; font-size: 22px; }
+    h2 { margin: 0 0 8px; font-size: 16px; }
+    .card { border: 1px solid rgba(127,127,127,.35); border-radius: 14px; padding: 14px; margin: 12px 0; }
+    label { display:block; font-size: 13px; opacity: .85; margin: 10px 0 6px; }
+    textarea, input { width: 100%; box-sizing: border-box; padding: 12px; border-radius: 12px; border: 1px solid rgba(127,127,127,.35); font-size: 15px; }
+    textarea { min-height: 110px; resize: vertical; }
+    .row { display:flex; gap:10px; flex-wrap: wrap; align-items: center; }
+    button {
+      padding: 12px 14px; border-radius: 12px; border: 1px solid rgba(127,127,127,.35);
+      background: transparent; font-size: 15px; cursor: pointer;
+    }
+    button.primary { background: #111; color: #fff; border-color: #111; }
+    .tabs { display:flex; gap:10px; margin: 10px 0 0; }
+    .tab { flex:1; }
+    .muted { font-size: 12px; opacity: .75; line-height: 1.35; }
+    .ok { color: #1a7f37; }
+    .warn { color: #b85c00; }
+    .err { color: #b00020; }
+    .pill { display:inline-block; padding: 4px 10px; border: 1px solid rgba(127,127,127,.35); border-radius: 999px; font-size: 12px; }
+    .footer { margin-top: 12px; font-size: 12px; opacity: .75; }
+    .preview { margin-top: 10px; display:none; }
+    .preview img { max-width: 100%; border-radius: 12px; border: 1px solid rgba(127,127,127,.35); }
+    a { text-decoration: none; }
+  </style>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "SecretMessage",
+    "url": "https://secretmessagetool.com/ar/",
+    "applicationCategory": "SecurityApplication",
+    "operatingSystem": "Web",
+    "description": "يقوم بتشفير الرسائل والصور الاختيارية مباشرة في متصفحك باستخدام AES-256-GCM. بدون تخزين على الخادم. بدون تتبع. شارك الكتل المشفرة بأمان.",
+    "offers": {
+      "@type": "Offer",
+      "price": "0",
+      "priceCurrency": "USD"
+    },
+    "publisher": {
+      "@type": "Organization",
+      "name": "SecretMessage",
+      "url": "https://secretmessagetool.com/"
+    }
+  }
+  </script>
+</head>
+<body>
+  <div class="wrap">
+    <h1>🔒 SecretMessage</h1>
+    <div class="muted">قم بتشفير الرسائل مباشرة في متصفحك. بدون تخزين على الخادم. بدون تتبع. يعمل مع واتساب وتيليجرام والبريد الإلكتروني والمزيد.</div>
+
+    <div class="tabs">
+      <button class="tab primary" id="tabLock">تشفير</button>
+      <button class="tab" id="tabUnlock">فك التشفير</button>
+    </div>
+
+    <div class="card" id="panelLock">
+      <label>الرسالة (اختياري)</label>
+      <textarea id="plain" placeholder="اكتب رسالة أو أضف صورة…"></textarea>
+
+      <label>الصورة (اختياري)</label>
+      <input type="file" id="photo" accept="image/*" />
+
+      <label>المفتاح</label>
+      <div class="row">
+        <input id="key" placeholder="اكتب مفتاحك الخاص أو قم بإنشاء واحد…" autocomplete="off" />
+        <button id="genKey" type="button">🔑 إنشاء</button>
+      </div>
+      <div class="row" style="margin-top:8px;">
+        <span class="pill" id="strengthPill">القوة: -</span>
+        <span class="muted" id="strengthHint"></span>
+      </div>
+
+      <div class="row" style="margin-top:12px;">
+        <button class="primary" id="lockBtn" type="button">تشفير ← إنشاء كتلة مشفرة</button>
+        <button id="clearLock" type="button">مسح</button>
+      </div>
+
+      <label>الكتلة المشفرة (الصقها في واتساب أو احفظها)</label>
+      <textarea id="cipher" placeholder="ستظهر الكتلة المشفرة هنا…" readonly></textarea>
+
+      <div class="row" style="margin-top:10px;">
+        <button id="copyCipher" type="button">نسخ</button>
+        <button id="shareCipher" type="button">مشاركة</button>
+        <button id="downloadCipher" type="button">تنزيل كملف .txt</button>
+        <span class="muted" id="lockStatus"></span>
+      </div>
+
+      <div class="footer">
+        ملاحظة: إذا أرفقت صورة، فقد تصبح الكتلة المشفرة طويلة. إرسالها كملف أو مستند هو الخيار الأكثر أمانًا.
+      </div>
+    </div>
+
+    <div class="card" id="panelUnlock" style="display:none;">
+      <label>الكتلة المشفرة</label>
+      <textarea id="cipherIn" placeholder="الصق الكتلة المشفرة هنا…"></textarea>
+
+      <label>المفتاح</label>
+      <input id="keyIn" placeholder="أدخل المفتاح…" autocomplete="off" />
+
+      <div class="row" style="margin-top:12px;">
+        <button class="primary" id="unlockBtn" type="button">فك التشفير ← فتح</button>
+        <button id="clearUnlock" type="button">مسح</button>
+      </div>
+
+      <label>الرسالة بعد فك التشفير</label>
+      <textarea id="plainOut" placeholder="ستظهر الرسالة بعد فك التشفير هنا…" readonly></textarea>
+
+      <div class="preview" id="imgWrap">
+        <label>الصورة بعد فك التشفير</label>
+        <img id="imgOut" alt="الصورة بعد فك التشفير" />
+        <div class="row" style="margin-top:10px;">
+          <button id="downloadImg" type="button">تنزيل الصورة</button>
+        </div>
+      </div>
+
+      <div class="row" style="margin-top:10px;">
+        <button id="copyPlain" type="button">نسخ النص</button>
+        <button id="sharePlain" type="button">مشاركة</button>
+        <span class="muted" id="unlockStatus"></span>
+      </div>
+
+      <div class="footer">
+        ملاحظة: إذا كان المفتاح غير صحيح أو تم تعديل الكتلة، فسيفشل فك التشفير لأن AES-GCM يتحقق من سلامة البيانات.
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>☕ ادعم هذا المشروع</h2>
+      <div class="muted" style="margin-bottom:10px;">
+        هذا المشروع مجاني بالكامل ويركز على الخصوصية أولًا. إذا أردت دعمه:
+      </div>
+
+      <label>عنوان البيتكوين (SegWit)</label>
+      <input id="donateAddr" value="bc1qw8g5fa82nj9eu6akr9wxx4gh4c5fxekm8dykgy" readonly />
+
+      <div class="row" style="margin-top:10px;">
+        <button id="copyDonate" type="button">نسخ العنوان</button>
+        <span class="muted" id="donateStatus"></span>
+      </div>
+
+      <div class="footer">
+        ملاحظة: نحن لا نستخدم الإعلانات ولا التتبع. نريد أن يبقى هذا المشروع محافظًا على الخصوصية أولًا.
+      </div>
+    </div>
+
+    <div class="card" style="display:flex; gap:10px; flex-wrap:wrap; align-items:center; justify-content:space-between;">
+      <div class="row" style="gap:8px;">
+        <span class="pill">🛡️ مشفر على جهازك</span>
+        <span class="pill">🗄️ بدون تخزين على الخادم</span>
+        <span class="pill">🕵️ بدون تتبع</span>
+      </div>
+
+      <div class="muted">
+        كيف يعمل: كل شيء يتم تشفيره وفك تشفيره داخل متصفحك. لا يتم رفع أي شيء.
+      </div>
+
+      <div class="muted" style="margin-top:8px; display:flex; gap:10px; flex-wrap:wrap; align-items:center;">
+        <a href="guide.html" target="_blank" rel="noopener">📘 الدليل</a>
+        <a href="privacy.html" target="_blank" rel="noopener">🔒 سياسة الخصوصية</a>
+        <a href="why-use-secretmessage.html" target="_blank" rel="noopener">📰 لماذا تستخدم SecretMessage؟</a>
+        <span>🌍 اللغات:</span>
+        <a class="pill" href="/">EN</a>
+        <a class="pill" href="/tr/">TR</a>
+        <a class="pill" href="/es/">ES</a>
+        <a class="pill" href="/pt/">PT</a>
+        <a class="pill" href="/fr/">FR</a>
+        <a class="pill" href="/de/">DE</a>
+        <a class="pill" href="/ar/" style="background:#111;color:#fff;border-color:#111;">AR</a>
+      </div>
+    </div>
+
+    <div class="card" style="margin-top:10px;">
+      <div style="font-weight:600; cursor:pointer;" onclick="toggleHow()">
+        ❓ كيف يعمل؟
+      </div>
+      <div id="howBox" style="display:none; margin-top:8px;" class="muted">
+        1️⃣ اكتب رسالتك وأضف صورة إذا أردت<br/>
+        2️⃣ اختر مفتاحًا أو استخدم 🔑 إنشاء<br/>
+        3️⃣ اضغط على <b>تشفير</b> لإنشاء الكتلة المشفرة<br/>
+        4️⃣ أرسل الكتلة ويفضل أن تكون على شكل <b>مستند</b> إذا كانت طويلة<br/>
+        5️⃣ يفتح المستلم تبويب <b>فك التشفير</b> ويلصق الكتلة ويدخل نفس المفتاح ثم يقرأ الرسالة
+      </div>
+    </div>
+  </div>
+
+  <script src="/app.js"></script>
+</body>
+</html>
