@@ -1,0 +1,161 @@
+<!doctype html>
+<html lang="pt">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Guia do SecretMessage | Como criptografar mensagens e fotos com segurança</title>
+  <meta name="description" content="Aprenda a usar o SecretMessage para criptografar mensagens e fotos diretamente no seu navegador. Compartilhe com mais segurança pelo WhatsApp, Telegram, Email, Instagram DM e outras plataformas. Compatível com uso offline e pode ser salvo no seu computador." />
+  <meta name="keywords" content="guia SecretMessage, guia de mensagem criptografada, criptografar mensagens no navegador, ferramenta de mensagem privada, compartilhamento de foto criptografada, ferramenta de criptografia offline, mensagem criptografada WhatsApp, mensagem criptografada Telegram, privacidade Instagram DM, ferramenta de criptografia para email" />
+  <meta name="author" content="SecretMessage" />
+  <meta property="og:title" content="Guia do SecretMessage" />
+  <meta property="og:description" content="Criptografe mensagens e fotos diretamente no seu navegador. Compartilhe com mais segurança por aplicativos de mensagens, email ou mensagens diretas. Compatível com uso offline e pode ser salvo localmente." />
+  <meta property="og:url" content="https://secretmessagetool.com/pt/guia.html" />
+  <meta property="og:type" content="article" />
+  <meta property="og:image" content="https://secretmessagetool.com/icon-512.png" />
+  <link rel="canonical" href="https://secretmessagetool.com/pt/guia.html" />
+  <meta name="robots" content="index,follow" />
+  <style>
+    :root { color-scheme: light dark; }
+    body { font-family:-apple-system,system-ui,Segoe UI,Roboto,Arial; margin:0; }
+    .wrap { max-width:780px; margin:0 auto; padding:16px; }
+    .card { border:1px solid rgba(127,127,127,.35); border-radius:14px; padding:14px; margin:12px 0; }
+    .muted { font-size:13px; opacity:.8; line-height:1.55; }
+    h1 { margin: 10px 0 8px; font-size: 24px; }
+    h2 { margin: 0 0 8px; font-size: 18px; }
+    p, li { line-height: 1.6; }
+    a { text-decoration:none; color:inherit; }
+    .pill { display:inline-block; padding:4px 10px; border:1px solid rgba(127,127,127,.35); border-radius:999px; font-size:12px; }
+  </style>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "HowTo",
+    "name": "Como usar o SecretMessage",
+    "description": "Guia passo a passo para criptografar e descriptografar mensagens e fotos opcionais com o SecretMessage.",
+    "url": "https://secretmessagetool.com/pt/guia.html",
+    "publisher": {
+      "@type": "Organization",
+      "name": "SecretMessage",
+      "url": "https://secretmessagetool.com/"
+    },
+    "step": [
+      {
+        "@type": "HowToStep",
+        "name": "Escreva sua mensagem",
+        "text": "Abra a aba Criptografar, escreva sua mensagem e, se quiser, adicione uma foto."
+      },
+      {
+        "@type": "HowToStep",
+        "name": "Escolha uma chave",
+        "text": "Crie sua própria chave ou use o gerador integrado."
+      },
+      {
+        "@type": "HowToStep",
+        "name": "Crie o bloco criptografado",
+        "text": "Clique em Criptografar para gerar um único bloco criptografado."
+      },
+      {
+        "@type": "HowToStep",
+        "name": "Compartilhe com segurança",
+        "text": "Copie o bloco criptografado ou baixe-o como arquivo de texto e envie por aplicativos de mensagens, email ou mensagens diretas."
+      },
+      {
+        "@type": "HowToStep",
+        "name": "Descriptografe com a mesma chave",
+        "text": "O destinatário abre a aba Descriptografar, cola o bloco, digita a mesma chave e descriptografa."
+      }
+    ]
+  }
+  </script>
+</head>
+<body>
+  <div class="wrap">
+    <h1>Como usar o SecretMessage</h1>
+
+    <div class="card">
+      <h2>O que é o SecretMessage?</h2>
+      <p class="muted" style="margin-top:6px;">
+        O SecretMessage é uma ferramenta de navegador compatível com uso offline que criptografa texto e fotos opcionais diretamente no seu dispositivo usando AES-256-GCM.
+        Seu conteúdo é processado localmente no navegador e não é enviado para um servidor.
+      </p>
+      <div class="muted" style="margin-top:10px;">
+        <a href="/pt/" rel="noopener">← Voltar para a página inicial</a>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>Por que criptografar antes de enviar?</h2>
+      <p class="muted" style="margin-top:6px;">
+        O SecretMessage ajuda você a criptografar conteúdo antes de enviá-lo por plataformas como WhatsApp, Telegram, Email, Instagram DM, Signal, Discord ou outros canais compatíveis com copiar e colar.
+        Em vez de enviar texto em claro, você envia um bloco criptografado que só pode ser aberto com a mesma chave.
+      </p>
+    </div>
+
+    <div class="card">
+      <h2>Você pode usar offline ou salvar no seu computador?</h2>
+      <p class="muted" style="margin-top:6px;">
+        Sim. O SecretMessage foi desenvolvido como um aplicativo web compatível com uso offline. Depois de carregar o site, os arquivos principais podem continuar disponíveis no seu dispositivo por meio do cache do navegador e do suporte a service worker.
+        Você também pode salvar os arquivos do projeto no seu computador e abrir o aplicativo localmente em um navegador para uso pessoal offline.
+      </p>
+      <div class="muted" style="margin-top:8px;">
+        <span class="pill">Compatível com uso offline</span>
+        <span class="pill">Pode ser salvo localmente</span>
+        <span class="pill">Nenhuma conta necessária</span>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>1) Crie um bloco criptografado</h2>
+      <p class="muted" style="margin-top:8px;">
+        Abra a aba <b>Criptografar</b>. Escreva sua mensagem e, se quiser, adicione uma foto.
+        Depois, escolha sua própria chave ou use <b>🔑 Gerar</b>.
+        Clique em <b>Criptografar → Criar bloco criptografado</b> para gerar um único bloco criptografado.
+      </p>
+    </div>
+
+    <div class="card">
+      <h2>2) Compartilhe pelo canal que preferir</h2>
+      <p class="muted" style="margin-top:8px;">
+        Você pode copiar o bloco criptografado e colá-lo no WhatsApp, Telegram, Email, Instagram DM, Signal, Discord ou plataformas semelhantes.
+        Se você incluiu uma foto, o bloco criptografado pode ficar grande. Nesse caso, baixá-lo como arquivo de texto e enviá-lo como documento ou arquivo costuma ser a opção mais confiável.
+      </p>
+    </div>
+
+    <div class="card">
+      <h2>3) Descriptografe a mensagem</h2>
+      <p class="muted" style="margin-top:8px;">
+        O destinatário abre a aba <b>Descriptografar</b>, cola o bloco criptografado e digita a mesma chave.
+        Se a chave estiver correta, a mensagem original e a foto opcional serão reveladas.
+        Se a chave estiver errada ou se o bloco tiver sido alterado, a descriptografia falhará porque o AES-GCM verifica a integridade.
+      </p>
+    </div>
+
+    <div class="card">
+      <h2>Boas práticas</h2>
+      <div class="muted" style="margin-top:8px;">
+        <b>Se possível, não envie a chave na mesma mensagem.</b><br/>
+        <b>Use uma chave mais forte para conteúdo sensível.</b><br/>
+        <b>Se o bloco criptografado ficar grande, envie-o como arquivo ou documento.</b><br/>
+        <b>Mantenha seu dispositivo seguro.</b>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>Perguntas frequentes</h2>
+      <div class="muted" style="margin-top:8px;">
+        <b>Meus dados vão para um servidor?</b> Não. A criptografia e a descriptografia acontecem localmente no seu navegador.<br/>
+        <b>Posso usar isso no meu computador sem ficar online?</b> Sim. Ele é compatível com uso offline e também pode ser salvo para uso local no seu dispositivo.<br/>
+        <b>Com quais aplicativos posso usar?</b> Qualquer plataforma que permita colar texto ou enviar um arquivo, incluindo WhatsApp, Telegram, Email, Instagram DM, Signal e muito mais.<br/>
+        <b>Por que o bloco criptografado fica longo?</b> Porque o texto e os dados opcionais da foto são empacotados em um único bloco criptografado.<br/>
+        <b>O que acontece se eu perder a chave?</b> O conteúdo não pode ser recuperado sem a chave correta.
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="muted">
+        Política de Privacidade: <a href="/pt/privacidade.html" rel="noopener" target="_blank">privacidade.html</a>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

@@ -1,0 +1,212 @@
+<!doctype html>
+<html lang="pt">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <meta name="theme-color" content="#111111" />
+  <meta name="description" content="SecretMessage – Criptografe mensagens e fotos diretamente no seu navegador com AES-256. Sem armazenamento no servidor. Sem rastreamento. Compartilhe com mais segurança pelo WhatsApp, Telegram, Email e muito mais." />
+  <meta name="keywords" content="mensagem secreta, mensagem criptografada, mensagem privada, criptografia de fotos, AES-256, ferramenta de criptografia offline" />
+  <meta name="author" content="SecretMessage" />
+  <title>SecretMessage – Ferramenta de criptografia de mensagens e fotos</title>
+  <meta property="og:title" content="SecretMessage – Criptografe localmente. Compartilhe com segurança." />
+  <meta property="og:description" content="Criptografe mensagens e fotos no seu dispositivo. Sem armazenamento no servidor. Sem rastreamento." />
+  <meta property="og:url" content="https://secretmessagetool.com/pt/" />
+  <meta property="og:type" content="website" />
+  <meta property="og:image" content="https://secretmessagetool.com/icon-512.png" />
+  <link rel="canonical" href="https://secretmessagetool.com/pt/" />
+  <link rel="manifest" href="/manifest.json" />
+  <link rel="icon" href="/icon-192.png" />
+  <link rel="apple-touch-icon" href="/icon-192.png" />
+  <style>
+    :root { color-scheme: light dark; }
+    body { font-family: -apple-system, system-ui, Segoe UI, Roboto, Arial; margin: 0; }
+    .wrap { max-width: 780px; margin: 0 auto; padding: 16px; }
+    h1 { margin: 10px 0 6px; font-size: 22px; }
+    h2 { margin: 0 0 8px; font-size: 16px; }
+    .card { border: 1px solid rgba(127,127,127,.35); border-radius: 14px; padding: 14px; margin: 12px 0; }
+    label { display:block; font-size: 13px; opacity: .85; margin: 10px 0 6px; }
+    textarea, input { width: 100%; box-sizing: border-box; padding: 12px; border-radius: 12px; border: 1px solid rgba(127,127,127,.35); font-size: 15px; }
+    textarea { min-height: 110px; resize: vertical; }
+    .row { display:flex; gap:10px; flex-wrap: wrap; align-items: center; }
+    button {
+      padding: 12px 14px; border-radius: 12px; border: 1px solid rgba(127,127,127,.35);
+      background: transparent; font-size: 15px; cursor: pointer;
+    }
+    button.primary { background: #111; color: #fff; border-color: #111; }
+    .tabs { display:flex; gap:10px; margin: 10px 0 0; }
+    .tab { flex:1; }
+    .muted { font-size: 12px; opacity: .75; line-height: 1.35; }
+    .ok { color: #1a7f37; }
+    .warn { color: #b85c00; }
+    .err { color: #b00020; }
+    .pill { display:inline-block; padding: 4px 10px; border: 1px solid rgba(127,127,127,.35); border-radius: 999px; font-size: 12px; }
+    .footer { margin-top: 12px; font-size: 12px; opacity: .75; }
+    .preview { margin-top: 10px; display:none; }
+    .preview img { max-width: 100%; border-radius: 12px; border: 1px solid rgba(127,127,127,.35); }
+    a { text-decoration: none; }
+  </style>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "SecretMessage",
+    "url": "https://secretmessagetool.com/pt/",
+    "applicationCategory": "SecurityApplication",
+    "operatingSystem": "Web",
+    "description": "Criptografa mensagens e fotos opcionais diretamente no seu navegador com AES-256-GCM. Sem armazenamento no servidor. Sem rastreamento. Compartilhe blocos criptografados com mais segurança.",
+    "offers": {
+      "@type": "Offer",
+      "price": "0",
+      "priceCurrency": "USD"
+    },
+    "publisher": {
+      "@type": "Organization",
+      "name": "SecretMessage",
+      "url": "https://secretmessagetool.com/"
+    }
+  }
+  </script>
+</head>
+<body>
+  <div class="wrap">
+    <h1>🔒 SecretMessage</h1>
+    <div class="muted">Criptografe mensagens diretamente no seu navegador. Sem armazenamento no servidor. Sem rastreamento. Funciona com WhatsApp, Telegram, Email e muito mais.</div>
+
+    <div class="tabs">
+      <button class="tab primary" id="tabLock">Criptografar</button>
+      <button class="tab" id="tabUnlock">Descriptografar</button>
+    </div>
+
+    <div class="card" id="panelLock">
+      <label>Mensagem (opcional)</label>
+      <textarea id="plain" placeholder="Escreva uma mensagem ou adicione uma foto…"></textarea>
+
+      <label>Foto (opcional)</label>
+      <input type="file" id="photo" accept="image/*" />
+
+      <label>Chave</label>
+      <div class="row">
+        <input id="key" placeholder="Escreva sua própria chave ou gere uma…" autocomplete="off" />
+        <button id="genKey" type="button">🔑 Gerar</button>
+      </div>
+      <div class="row" style="margin-top:8px;">
+        <span class="pill" id="strengthPill">Força: -</span>
+        <span class="muted" id="strengthHint"></span>
+      </div>
+
+      <div class="row" style="margin-top:12px;">
+        <button class="primary" id="lockBtn" type="button">Criptografar → Criar bloco criptografado</button>
+        <button id="clearLock" type="button">Limpar</button>
+      </div>
+
+      <label>Bloco criptografado (cole no WhatsApp ou salve)</label>
+      <textarea id="cipher" placeholder="Seu bloco criptografado aparecerá aqui…" readonly></textarea>
+
+      <div class="row" style="margin-top:10px;">
+        <button id="copyCipher" type="button">Copiar</button>
+        <button id="shareCipher" type="button">Compartilhar</button>
+        <button id="downloadCipher" type="button">Baixar como .txt</button>
+        <span class="muted" id="lockStatus"></span>
+      </div>
+
+      <div class="footer">
+        Dica: Se você anexou uma foto, o bloco criptografado pode ficar grande. Enviá-lo como arquivo ou documento costuma ser a opção mais segura.
+      </div>
+    </div>
+
+    <div class="card" id="panelUnlock" style="display:none;">
+      <label>Bloco criptografado</label>
+      <textarea id="cipherIn" placeholder="Cole o bloco criptografado aqui…"></textarea>
+
+      <label>Chave</label>
+      <input id="keyIn" placeholder="Digite a chave…" autocomplete="off" />
+
+      <div class="row" style="margin-top:12px;">
+        <button class="primary" id="unlockBtn" type="button">Descriptografar → Abrir</button>
+        <button id="clearUnlock" type="button">Limpar</button>
+      </div>
+
+      <label>Mensagem descriptografada</label>
+      <textarea id="plainOut" placeholder="A mensagem descriptografada aparecerá aqui…" readonly></textarea>
+
+      <div class="preview" id="imgWrap">
+        <label>Foto descriptografada</label>
+        <img id="imgOut" alt="Foto descriptografada" />
+        <div class="row" style="margin-top:10px;">
+          <button id="downloadImg" type="button">Baixar foto</button>
+        </div>
+      </div>
+
+      <div class="row" style="margin-top:10px;">
+        <button id="copyPlain" type="button">Copiar texto</button>
+        <button id="sharePlain" type="button">Compartilhar</button>
+        <span class="muted" id="unlockStatus"></span>
+      </div>
+
+      <div class="footer">
+        Observação: Se a chave estiver errada ou se o bloco tiver sido alterado, a descriptografia falhará porque o AES-GCM verifica a integridade.
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>☕ Apoie este projeto</h2>
+      <div class="muted" style="margin-bottom:10px;">
+        Este projeto é totalmente gratuito e focado em privacidade. Se quiser apoiá-lo:
+      </div>
+
+      <label>Endereço Bitcoin (SegWit)</label>
+      <input id="donateAddr" value="bc1qw8g5fa82nj9eu6akr9wxx4gh4c5fxekm8dykgy" readonly />
+
+      <div class="row" style="margin-top:10px;">
+        <button id="copyDonate" type="button">Copiar endereço</button>
+        <span class="muted" id="donateStatus"></span>
+      </div>
+
+      <div class="footer">
+        Observação: Não usamos anúncios nem rastreamento. Queremos manter este projeto focado em privacidade.
+      </div>
+    </div>
+
+    <div class="card" style="display:flex; gap:10px; flex-wrap:wrap; align-items:center; justify-content:space-between;">
+      <div class="row" style="gap:8px;">
+        <span class="pill">🛡️ Criptografado no seu dispositivo</span>
+        <span class="pill">🗄️ Sem armazenamento no servidor</span>
+        <span class="pill">🕵️ Sem rastreamento</span>
+      </div>
+
+      <div class="muted">
+        Como funciona: tudo é criptografado e descriptografado no seu navegador. Nada é enviado.
+      </div>
+
+      <div class="muted" style="margin-top:8px; display:flex; gap:10px; flex-wrap:wrap; align-items:center;">
+        <a href="guia.html" target="_blank" rel="noopener">📘 Guia</a>
+        <a href="privacidade.html" target="_blank" rel="noopener">🔒 Política de Privacidade</a>
+        <a href="por-que-usar-secretmessage.html" target="_blank" rel="noopener">📰 Por que usar o SecretMessage?</a>
+        <span>🌍 Idiomas:</span>
+        <a class="pill" href="/">EN</a>
+        <a class="pill" href="/tr/">TR</a>
+        <a class="pill" href="/es/">ES</a>
+        <a class="pill" href="/pt/" style="background:#111;color:#fff;border-color:#111;">PT</a>
+        <a class="pill" href="/fr/">FR</a>
+        <a class="pill" href="/de/">DE</a>
+        <a class="pill" href="/ar/">AR</a>
+      </div>
+    </div>
+
+    <div class="card" style="margin-top:10px;">
+      <div style="font-weight:600; cursor:pointer;" onclick="toggleHow()">
+        ❓ Como funciona?
+      </div>
+      <div id="howBox" style="display:none; margin-top:8px;" class="muted">
+        1️⃣ Escreva sua mensagem e, se quiser, adicione uma foto<br/>
+        2️⃣ Escolha uma chave ou use 🔑 Gerar<br/>
+        3️⃣ Clique em <b>Criptografar</b> para criar o bloco criptografado<br/>
+        4️⃣ Envie o bloco, de preferência como <b>documento</b> se ele ficar grande<br/>
+        5️⃣ O destinatário abre a aba <b>Descriptografar</b>, cola o bloco, digita a mesma chave e lê a mensagem
+      </div>
+    </div>
+  </div>
+
+  <script src="/app.js"></script>
+</body>
+</html>
