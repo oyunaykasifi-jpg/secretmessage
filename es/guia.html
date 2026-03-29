@@ -1,0 +1,161 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Guía de SecretMessage | Cómo cifrar mensajes y fotos de forma segura</title>
+  <meta name="description" content="Aprende a usar SecretMessage para cifrar mensajes y fotos directamente en tu navegador. Comparte de forma más segura por WhatsApp, Telegram, Email, Instagram DM y otras plataformas. Compatible con uso offline y puede guardarse en tu ordenador." />
+  <meta name="keywords" content="guía de SecretMessage, guía de mensaje cifrado, cifrar mensajes en navegador, herramienta de mensaje privado, compartir fotos cifradas, herramienta de cifrado offline, mensaje cifrado de WhatsApp, mensaje cifrado de Telegram, privacidad en Instagram DM, herramienta de cifrado por email" />
+  <meta name="author" content="SecretMessage" />
+  <meta property="og:title" content="Guía de SecretMessage" />
+  <meta property="og:description" content="Cifra mensajes y fotos directamente en tu navegador. Compártelos de forma más segura por apps de mensajería, email o mensajes directos. Compatible con uso offline y puede guardarse localmente." />
+  <meta property="og:url" content="https://secretmessagetool.com/es/guia.html" />
+  <meta property="og:type" content="article" />
+  <meta property="og:image" content="https://secretmessagetool.com/icon-512.png" />
+  <link rel="canonical" href="https://secretmessagetool.com/es/guia.html" />
+  <meta name="robots" content="index,follow" />
+  <style>
+    :root { color-scheme: light dark; }
+    body { font-family:-apple-system,system-ui,Segoe UI,Roboto,Arial; margin:0; }
+    .wrap { max-width:780px; margin:0 auto; padding:16px; }
+    .card { border:1px solid rgba(127,127,127,.35); border-radius:14px; padding:14px; margin:12px 0; }
+    .muted { font-size:13px; opacity:.8; line-height:1.55; }
+    h1 { margin: 10px 0 8px; font-size: 24px; }
+    h2 { margin: 0 0 8px; font-size: 18px; }
+    p, li { line-height: 1.6; }
+    a { text-decoration:none; color:inherit; }
+    .pill { display:inline-block; padding:4px 10px; border:1px solid rgba(127,127,127,.35); border-radius:999px; font-size:12px; }
+  </style>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "HowTo",
+    "name": "Cómo usar SecretMessage",
+    "description": "Guía paso a paso para cifrar y descifrar mensajes y fotos opcionales con SecretMessage.",
+    "url": "https://secretmessagetool.com/es/guia.html",
+    "publisher": {
+      "@type": "Organization",
+      "name": "SecretMessage",
+      "url": "https://secretmessagetool.com/"
+    },
+    "step": [
+      {
+        "@type": "HowToStep",
+        "name": "Escribe tu mensaje",
+        "text": "Abre la pestaña Cifrar, escribe tu mensaje y añade una foto si lo deseas."
+      },
+      {
+        "@type": "HowToStep",
+        "name": "Elige una clave",
+        "text": "Crea tu propia clave o usa el generador integrado."
+      },
+      {
+        "@type": "HowToStep",
+        "name": "Crea el bloque cifrado",
+        "text": "Haz clic en Cifrar para generar un único bloque cifrado."
+      },
+      {
+        "@type": "HowToStep",
+        "name": "Compártelo de forma segura",
+        "text": "Copia el bloque cifrado o descárgalo como archivo de texto y envíalo por aplicaciones de mensajería, email o mensajes directos."
+      },
+      {
+        "@type": "HowToStep",
+        "name": "Descífralo con la misma clave",
+        "text": "El destinatario abre la pestaña Descifrar, pega el bloque, introduce la misma clave y lo descifra."
+      }
+    ]
+  }
+  </script>
+</head>
+<body>
+  <div class="wrap">
+    <h1>Cómo usar SecretMessage</h1>
+
+    <div class="card">
+      <h2>¿Qué es SecretMessage?</h2>
+      <p class="muted" style="margin-top:6px;">
+        SecretMessage es una herramienta de navegador compatible con uso offline que cifra texto y fotos opcionales directamente en tu dispositivo usando AES-256-GCM.
+        Tu contenido se procesa localmente en tu navegador y no se sube a ningún servidor.
+      </p>
+      <div class="muted" style="margin-top:10px;">
+        <a href="/es/" rel="noopener">← Volver al inicio</a>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>¿Por qué cifrar antes de enviar?</h2>
+      <p class="muted" style="margin-top:6px;">
+        SecretMessage te ayuda a cifrar tu contenido antes de enviarlo a través de plataformas como WhatsApp, Telegram, Email, Instagram DM, Signal, Discord u otros canales que permiten copiar y pegar texto.
+        En lugar de enviar texto plano, envías un bloque cifrado que solo puede abrirse con la misma clave.
+      </p>
+    </div>
+
+    <div class="card">
+      <h2>¿Puedes usarlo sin conexión o guardarlo en tu ordenador?</h2>
+      <p class="muted" style="margin-top:6px;">
+        Sí. SecretMessage está diseñado como una aplicación web compatible con uso offline. Después de cargar el sitio, los archivos principales pueden seguir disponibles en tu dispositivo gracias al caché del navegador y al soporte de service worker.
+        También puedes guardar los archivos del proyecto en tu ordenador y abrir la aplicación localmente en un navegador para uso personal sin conexión.
+      </p>
+      <div class="muted" style="margin-top:8px;">
+        <span class="pill">Compatible con uso offline</span>
+        <span class="pill">Puede guardarse localmente</span>
+        <span class="pill">No requiere cuenta</span>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>1) Crea un bloque cifrado</h2>
+      <p class="muted" style="margin-top:8px;">
+        Abre la pestaña <b>Cifrar</b>. Escribe tu mensaje y añade una foto si lo deseas.
+        Después elige tu propia clave o usa <b>🔑 Generar</b>.
+        Haz clic en <b>Cifrar → Crear bloque cifrado</b> para generar un único bloque cifrado.
+      </p>
+    </div>
+
+    <div class="card">
+      <h2>2) Compártelo por el canal que prefieras</h2>
+      <p class="muted" style="margin-top:8px;">
+        Puedes copiar el bloque cifrado y pegarlo en WhatsApp, Telegram, Email, Instagram DM, Signal, Discord u otras plataformas similares.
+        Si has incluido una foto, el bloque cifrado puede hacerse largo. En ese caso, descargarlo como archivo de texto y enviarlo como documento o archivo suele ser la opción más fiable.
+      </p>
+    </div>
+
+    <div class="card">
+      <h2>3) Descifra el mensaje</h2>
+      <p class="muted" style="margin-top:8px;">
+        El destinatario abre la pestaña <b>Descifrar</b>, pega el bloque cifrado e introduce la misma clave.
+        Si la clave es correcta, se mostrarán el mensaje original y la foto opcional.
+        Si la clave es incorrecta o el bloque fue modificado, el descifrado fallará porque AES-GCM verifica la integridad.
+      </p>
+    </div>
+
+    <div class="card">
+      <h2>Buenas prácticas</h2>
+      <div class="muted" style="margin-top:8px;">
+        <b>No envíes la clave en el mismo mensaje si es posible.</b><br/>
+        <b>Usa una clave más fuerte para contenido sensible.</b><br/>
+        <b>Si el bloque cifrado es largo, envíalo como archivo o documento.</b><br/>
+        <b>Mantén tu dispositivo seguro.</b>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>Preguntas frecuentes</h2>
+      <div class="muted" style="margin-top:8px;">
+        <b>¿Mis datos van a un servidor?</b> No. El cifrado y el descifrado ocurren localmente en tu navegador.<br/>
+        <b>¿Puedo usarlo en mi ordenador sin estar conectado?</b> Sí. Es compatible con uso offline y también puede guardarse para uso local en tu dispositivo.<br/>
+        <b>¿Con qué aplicaciones puedo usarlo?</b> Con cualquier plataforma que te permita pegar texto o enviar un archivo, incluyendo WhatsApp, Telegram, Email, Instagram DM, Signal y más.<br/>
+        <b>¿Por qué el bloque cifrado se hace largo?</b> Porque el texto y la foto opcional se empaquetan dentro de un único bloque cifrado.<br/>
+        <b>¿Qué pasa si pierdo la clave?</b> El contenido no puede recuperarse sin la clave correcta.
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="muted">
+        Política de Privacidad: <a href="/es/privacidad.html" rel="noopener" target="_blank">privacidad.html</a>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

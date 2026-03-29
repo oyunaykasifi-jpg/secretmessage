@@ -1,0 +1,111 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <meta name="theme-color" content="#111111" />
+  <meta name="description" content="SecretMessage – Cifra mensajes y fotos directamente en tu navegador con AES-256. Sin almacenamiento en servidor. Sin seguimiento. Comparte de forma segura." />
+  <meta name="keywords" content="mensaje secreto, mensaje cifrado, mensaje privado, cifrado de fotos, AES-256, herramienta de cifrado offline" />
+  <meta name="author" content="SecretMessage" />
+  <title>SecretMessage – Herramienta de cifrado de mensajes y fotos</title>
+
+  <meta property="og:title" content="SecretMessage – Cifra localmente. Comparte seguro." />
+  <meta property="og:description" content="Cifra mensajes y fotos en tu dispositivo. Sin almacenamiento en servidor. Sin seguimiento." />
+  <meta property="og:url" content="https://secretmessagetool.com/es/" />
+  <meta property="og:type" content="website" />
+  <meta property="og:image" content="https://secretmessagetool.com/icon-512.png" />
+
+  <link rel="canonical" href="https://secretmessagetool.com/es/" />
+  <link rel="manifest" href="/manifest.json" />
+  <link rel="icon" href="/icon-192.png" />
+  <link rel="apple-touch-icon" href="/icon-192.png" />
+
+  <style>
+    :root { color-scheme: light dark; }
+    body { font-family: -apple-system, system-ui, Segoe UI, Roboto, Arial; margin: 0; }
+    .wrap { max-width: 780px; margin: 0 auto; padding: 16px; }
+    h1 { margin: 10px 0 6px; font-size: 22px; }
+    h2 { margin: 0 0 8px; font-size: 16px; }
+    .card { border: 1px solid rgba(127,127,127,.35); border-radius: 14px; padding: 14px; margin: 12px 0; }
+    label { display:block; font-size: 13px; opacity: .85; margin: 10px 0 6px; }
+    textarea, input { width: 100%; box-sizing: border-box; padding: 12px; border-radius: 12px; border: 1px solid rgba(127,127,127,.35); font-size: 15px; }
+    textarea { min-height: 110px; resize: vertical; }
+    .row { display:flex; gap:10px; flex-wrap: wrap; align-items: center; }
+    button { padding: 12px 14px; border-radius: 12px; border: 1px solid rgba(127,127,127,.35); background: transparent; font-size: 15px; cursor: pointer; }
+    button.primary { background: #111; color: #fff; border-color: #111; }
+    .tabs { display:flex; gap:10px; margin: 10px 0 0; }
+    .tab { flex:1; }
+    .muted { font-size: 12px; opacity: .75; line-height: 1.35; }
+    .pill { display:inline-block; padding: 4px 10px; border: 1px solid rgba(127,127,127,.35); border-radius: 999px; font-size: 12px; }
+    .footer { margin-top: 12px; font-size: 12px; opacity: .75; }
+    .preview { margin-top: 10px; display:none; }
+    .preview img { max-width: 100%; border-radius: 12px; border: 1px solid rgba(127,127,127,.35); }
+    a { text-decoration: none; }
+  </style>
+</head>
+
+<body>
+<div class="wrap">
+
+<h1>🔒 SecretMessage</h1>
+<div class="muted">Cifra mensajes directamente en tu navegador. Sin almacenamiento en servidor. Sin seguimiento. Funciona con WhatsApp, Telegram, Email y más.</div>
+
+<div class="tabs">
+  <button class="tab primary" id="tabLock">Cifrar</button>
+  <button class="tab" id="tabUnlock">Descifrar</button>
+</div>
+
+<div class="card" id="panelLock">
+  <label>Mensaje (opcional)</label>
+  <textarea id="plain" placeholder="Escribe un mensaje o añade una foto…"></textarea>
+
+  <label>Foto (opcional)</label>
+  <input type="file" id="photo" accept="image/*" />
+
+  <label>Clave</label>
+  <div class="row">
+    <input id="key" placeholder="Escribe una clave o genera una…" />
+    <button id="genKey">🔑 Generar</button>
+  </div>
+
+  <div class="row" style="margin-top:12px;">
+    <button class="primary" id="lockBtn">Cifrar → Crear bloque</button>
+    <button id="clearLock">Limpiar</button>
+  </div>
+
+  <label>Bloque cifrado</label>
+  <textarea id="cipher" readonly></textarea>
+</div>
+
+<div class="card">
+  <div class="row">
+    <span class="pill">🛡️ Cifrado en tu dispositivo</span>
+    <span class="pill">🗄️ Sin servidor</span>
+    <span class="pill">🕵️ Sin seguimiento</span>
+  </div>
+
+  <div class="muted">
+    Todo ocurre en tu navegador. Nada se sube a internet.
+  </div>
+
+  <div class="muted" style="margin-top:8px; display:flex; gap:10px; flex-wrap:wrap; align-items:center;">
+    <a href="guia.html" target="_blank">📘 Guía</a>
+    <a href="privacidad.html" target="_blank">🔒 Privacidad</a>
+    <a href="por-que-usar-secretmessage.html" target="_blank">📰 ¿Por qué usar SecretMessage?</a>
+
+    <span>🌍 Idiomas:</span>
+    <a class="pill" href="/">EN</a>
+    <a class="pill" href="/tr/">TR</a>
+    <a class="pill" href="/es/" style="background:#111;color:#fff;">ES</a>
+    <a class="pill" href="/pt/">PT</a>
+    <a class="pill" href="/fr/">FR</a>
+    <a class="pill" href="/de/">DE</a>
+    <a class="pill" href="/ar/">AR</a>
+  </div>
+</div>
+
+</div>
+
+<script src="/app.js"></script>
+</body>
+</html>
